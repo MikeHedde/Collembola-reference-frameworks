@@ -1,9 +1,0 @@
-"indicator","framework","n","spearman_rho","exact_agreement","within_one_class"
-"RSr","ANDRA",26,0.981800299037362,0.961538461538462,1
-"RSr","RMQS_BioDiv_Bretagne",26,1,1,1
-"RSr","RMQS_Biodiversite",26,1,1,1
-"RSr","TIGA_rural",26,0.997293635091789,0.961538461538462,1
-"ab","ANDRA",26,0.993237153235966,0.923076923076923,1
-"ab","RMQS_BioDiv_Bretagne",26,1,1,1
-"ab","RMQS_Biodiversite",26,0.98231526547587,0.923076923076923,1
-"ab","TIGA_rural",26,0.983832238305398,0.884615384615385,1

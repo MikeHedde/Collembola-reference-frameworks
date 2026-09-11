@@ -1,0 +1,71 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the associated article and this software release."
+title: "Collembola reference frameworks: reproducible analysis workflow"
+type: software
+version: 1.0.0
+date-released: 2026-09-11
+
+authors:
+  - family-names: "Suarez"
+    given-names: "H."
+  - family-names: "Cortet"
+    given-names: "J."
+  - family-names: "Auclerc"
+    given-names: "A."
+  - family-names: "Bougon"
+    given-names: "N."
+  - family-names: "Brand"
+    given-names: "M."
+  - family-names: "Henon"
+    given-names: "N."
+  - family-names: "Jolivet"
+    given-names: "C."
+  - family-names: "Lévêque"
+    given-names: "A."
+  - family-names: "Pouzenc"
+    given-names: "S."
+  - family-names: "Versavel"
+    given-names: "C."
+  - family-names: "Hedde"
+    given-names: "M."
+
+repository-code: "https://github.com/MikeHedde/Collembola-reference-frameworks"
+
+keywords:
+  - Collembola
+  - soil biodiversity
+  - ecological indicators
+  - reference framework
+  - biodiversity monitoring
+  - reproducible research
+  - sensitivity analysis
+
+license: MIT
+
+preferred-citation:
+  type: article
+  title: "Empirical reference frameworks shape Collembola indicator distributions, scores and contrast sensitivity"
+  authors:
+    - family-names: "Suarez"
+      given-names: "H."
+    - family-names: "Cortet"
+      given-names: "J."
+    - family-names: "Auclerc"
+      given-names: "A."
+    - family-names: "Bougon"
+      given-names: "N."
+    - family-names: "Brand"
+      given-names: "M."
+    - family-names: "Henon"
+      given-names: "N."
+    - family-names: "Jolivet"
+      given-names: "C."
+    - family-names: "Lévêque"
+      given-names: "A."
+    - family-names: "Pouzenc"
+      given-names: "S."
+    - family-names: "Versavel"
+      given-names: "C."
+    - family-names: "Hedde"
+      given-names: "M."
+  journal: "Ecological Indicators"

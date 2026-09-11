@@ -1,241 +1,339 @@
-# Collembola reference-framework 
+# Collembola reference frameworks
 
-Reproducible R workflow rebuilt from the scripts and data supplied by H. Suarez for the *Ecological Indicators* on empirical Collembola reference frameworks.
+Reproducible analysis workflow associated with the manuscript:
 
-The repository now separates six stages that had previously been mixed together:
+> **Empirical reference frameworks shape Collembola indicator distributions, scores and contrast sensitivity**
 
-1. **provenance audit** of the historical preprocessing;
-2. **automatic reconstruction of the merged analysis dataset** from the five separate curated workbooks;
-3. **reproduction of the original indicator/scoring core**;
-4. **reviewer-requested robustness analyses**;
-5. **regeneration of the central manuscript figures**;
-6. **regeneration of the historical and reviewer-driven Supplementary Material**.
+Suarez H., Cortet J., Auclerc A., Bougon N., Brand M., Henon N., Jolivet C.,
+Lévêque A., Pouzenc S., Versavel C. & Hedde M.
 
-The historical `Stage_M2_Helio_Suarez.xlsx` is no longer a required input. It is treated only as an optional audit target.
+Target journal: *Ecological Indicators*.
 
-## Quick start
+## Overview
 
-Open `collembola-reference-frameworks.Rproj`, then run:
+Ecological indicators are often interpreted relative to empirical reference
+populations. When different monitoring datasets are used to construct these
+references, differences in their realised geographic, environmental,
+land-use and management composition can affect indicator distributions,
+quantile-derived thresholds and the scores subsequently assigned to the same
+observations.
 
-```r
-source("analysis/run_all.R")
-```
+This repository reproduces the analyses used to compare four empirical
+reference frameworks for Collembola indicators:
 
-The workflow will:
+- **RMQS-Biodiversité**
+- **RMQS BioDiv Bretagne**
+- **ANDRA**
+- **TIGA rural**
 
-- audit the supplied workbooks;
-- rebuild the merged reference dataset from the five `Feuille stats` sheets;
-- verify the expected reference sample sizes;
-- recompute the historical indicators and empirical 0-6 scores;
-- expose the historical TIGA abundance filter as a separate scenario;
-- run the reviewer robustness analyses;
-- export diagnostics for the Bioindicateur2 control mapping;
-- regenerate the central manuscript figures;
-- regenerate historical Supplementary Materials SM1-SM11 and reviewer-driven candidate supplements;
-- save `sessionInfo()` and run parameters.
+The same independent set of 26 agricultural Bioindicateur2 observations is
+then scored against each reference framework.
 
-The first complete run can finish with the LRR analysis intentionally skipped. This is expected until `config/bioindicateur2_controls.csv` has been populated with explicit checked controls.
+The principal manuscript analyses focus on:
+
+- rarefied species richness (`RSr`);
+- Collembola density (`ab`, individuals m^-2).
+
+Shannon diversity and Pielou evenness are retained in the supplementary
+workflow to document the broader historical analysis.
+
+## Main analytical questions
+
+The workflow evaluates three related questions.
+
+1. How do empirical Collembola indicator distributions and quantile-derived
+   score boundaries differ among candidate reference frameworks?
+
+2. How do these framework-specific boundaries affect the scores assigned to
+   the same independent observations, including their relative ranking and
+   classification agreement?
+
+3. How are raw ecological treatment-control contrasts translated through
+   framework-specific ordinal score boundaries?
+
+Sensitivity analyses additionally examine:
+
+- unequal reference sample sizes;
+- extreme observations and 1–99% winsorisation;
+- cross-framework score concordance;
+- site-weighted versus equal-weight pooled reference populations.
+
+These analyses are intended as robustness and transferability assessments.
+They do not isolate a causal effect of sampling design from geographic extent,
+environmental composition, land use or management history.
 
 ## Repository structure
 
 ```text
 .
-|-- analysis/
-|   |-- 00_audit_input_reconstruction.R
-|   |-- 01_build_analysis_dataset.R
-|   |-- 02_reproduce_original_results.R
-|   |-- reviewer_robustness_analysis.R
-|   |-- 03_regenerate_manuscript_figures.R
-|   |-- 04_regenerate_supplementary_material.R
-|   `-- run_all.R
-|-- R/
-|   |-- project_paths.R
-|   |-- io_helpers.R
-|   |-- data_preparation.R
-|   |-- indicator_scoring.R
-|   `-- reviewer_functions.R
-|-- config/
-|   |-- bioindicateur2_controls.csv
-|   `-- README.md
-|-- data/
-|   |-- raw/       # supplied workbooks; ignored by Git by default
-|   |-- audit/     # optional historical merged file; audit only
-|   |-- derived/   # generated RDS / manifests
-|   `-- README.md
-|-- output/
-|   |-- audit/
-|   |-- baseline/
-|   |-- reviewer/
-|   |-- manuscript/
-|   `-- supplementary/
-|-- legacy/
-|   |-- Analyse_statistique_Helio_2025.R
-|   |-- GiveScores_Helio_2025.R
-|   |-- Mise_en_forme_Helio_2025.R
-|   |-- multiCvM_Helio_2025.R
-|   `-- statsvar_Helio_2025.R
-|-- PROVENANCE_AUDIT.md
-|-- REVIEWER_ANALYSIS_MAP.md
-|-- CITATION.cff.template
-|-- LICENSE
-`-- collembola-reference-frameworks.Rproj
-```
+├── analysis/
+│   ├── 01_validate_analysis_data.R
+│   ├── 02_main_analysis.R
+│   ├── 03_sensitivity_analyses.R
+│   ├── 04_manuscript_figures.R
+│   ├── 05_supplementary_material.R
+│   └── run_all.R
+│
+├── R/
+│   ├── analysis_functions.R
+│   ├── indicator_scoring.R
+│   ├── io_helpers.R
+│   └── project_paths.R
+│
+├── data/
+│   ├── README.md
+│   └── analysis/
+│       ├── reference_indicator_values.csv
+│       ├── bioindicateur2_indicator_values.csv
+│       ├── bioindicateur2_contrasts.csv
+│       ├── bioindicateur2_controls.csv
+│       └── map_points.csv
+│
+├── output/
+│   ├── analysis/
+│   ├── sensitivity/
+│   ├── manuscript/
+│   └── supplementary/
+│
+├── reproducibility/
+│   └── sessionInfo.txt
+│
+├── CITATION.cff
+├── LICENSE
+├── VERSION
+└── collembola-reference-frameworks.Rproj
+Analysis-ready data
 
-## Data inputs
+The repository starts from frozen site-level indicator values rather than from
+the original taxon-by-site abundance matrices.
 
-The analysis-level workflow uses the current curated `Feuille stats` sheets from:
+The four candidate reference datasets contain:
 
-- `RMQS_2024_COLLEMBOLA.xlsx`
-- `RMQS_2021_COLLEMBOLA.xlsx`
-- `RMQS_Bretagne.xls`
-- `ANDRA_ARTHROPODA.xlsx`
-- `TIGA_rural_MESOFAUNA.xlsx`
-- `Bioindicateur2_ARTHROPODA.xls`
+Framework	All observations	Agricultural observations
+RMQS-Biodiversité	96	58
+RMQS BioDiv Bretagne	98	89
+ANDRA	132	90
+TIGA rural	430	345
+Total	756	582
 
-and uses `TaxRef18_Collembola.csv` for the historical TAXREF quality-control audit.
+Agricultural sites are defined from Corine Land Cover level 1.
 
-See `data/README.md` and `PROVENANCE_AUDIT.md` for the distinction between curated analysis inputs and upstream raw-data reconstruction.
+Three RMQS-Biodiversité observations do not have an assigned CLC level-1
+category and are explicitly retained as missing in the supplementary
+land-cover summary.
 
-## Why not use `Stage_M2_Helio_Suarez.xlsx` directly?
+For ANDRA, the 90 agricultural observations correspond to 89 unique mapped
+locations because site O17 was sampled in two different years.
 
-The historical `Mise en forme.R` shows that `Stage_M2_Helio_Suarez.xlsx` is created after the separate datasets have been prepared and harmonised. Treating it as a primary input hides provenance and makes the analysis dependent on an opaque intermediate.
+See data/README.md for detailed variable definitions and
+data-provenance information.
 
-`analysis/01_build_analysis_dataset.R` therefore recreates that merge automatically. If the historical file is present under `data/audit/`, the workflow compares the reconstruction against it but never uses it to generate the revised results.
+Scoring system
 
-## Indicator definitions retained from the historical scripts
+For each empirical reference framework and indicator, the observed:
 
-The baseline reproduction deliberately preserves the historical definitions so reviewer sensitivities are not confounded by a silent methodological change:
+minimum (q00);
+q20;
+q40;
+q60;
+q80;
+maximum (q100);
 
-- taxon densities are rounded before community calculations;
-- taxon columns whose names contain a space define the historical `communities_strict` subset;
-- rarefied richness uses `vegan::rarefy(..., sample = 500)`;
-- density (`ab`) is the row sum of all taxon columns;
-- Shannon is computed on `communities_strict`;
-- Pielou is `Shannon / log(RSr)` as in the supplied script;
-- 0-6 scores reproduce the quantile logic of `GiveScores.R`.
+define seven ordered relative score classes from 0 to 6.
 
-The submitted manuscript focuses on **rarefied richness (`RSr`) and density (`ab`)**. Shannon and Pielou remain in the baseline audit for provenance but are not propagated through every reviewer sensitivity by default.
+Scores 1–5 partition observations within the empirical reference range.
+Score 0 represents values below the observed minimum, whereas score 6
+represents values at or above the observed maximum.
 
-## Historical TIGA outlier rule
+The resulting score therefore represents an observation's position relative to
+a selected empirical reference population. It should not be interpreted as an
+independent measure of complete soil health or as a biological effect-size
+scale.
 
-The supplied analysis script removed `TIGA_rural$ab >= 75000` immediately before density scoring. This was ad hoc and was not part of a general sensitivity framework.
+Reproducing the analyses
 
-The revised workflow therefore reports it explicitly rather than silently keeping or deleting it:
+From the repository root:
 
-- `legacy_tiga_ab_lt_75000`;
-- `full_untrimmed`;
-- `winsorised_01_99`.
+Rscript analysis/run_all.R
 
-Inspect the resulting threshold and score differences before deciding which scenario becomes the revised main analysis.
+run_all.R executes each step in a separate R session so that scripts cannot
+depend on objects left in memory by previous steps.
 
-## Reviewer analyses
+The workflow performs:
 
-The reviewer workflow addresses five questions:
+analysis-ready data
+        ↓
+01_validate_analysis_data.R
+        ↓
+02_main_analysis.R
+        ↓
+03_sensitivity_analyses.R
+        ↓
+04_manuscript_figures.R
+        ↓
+05_supplementary_material.R
 
-1. **Sample-size imbalance** — 1,000 repeated subsamples of each agricultural framework to `n = 58` without replacement.
-2. **Outlier sensitivity** — full untrimmed data versus 1-99% winsorisation, plus transparent >3 IQR counts and the historical TIGA filter comparison.
-3. **Cross-framework concordance** — Spearman correlation, exact agreement, agreement within one class, and broad `0-2 / 3-4 / 5-6` agreement for identical Bioindicateur2 observations.
-4. **Pooled framework** — raw site-weighted pooling versus balanced pooling with equal `n = 58` contribution from every framework.
-5. **Raw ecological contrast versus score translation** — LRR on raw values alongside framework-dependent Delta-score, but only after explicit controls have been mapped.
+A successful complete run ends with:
 
-See `REVIEWER_ANALYSIS_MAP.md` for the reviewer-to-output correspondence.
+Complete workflow finished successfully.
+Analysis steps
+01 — Data validation
 
-## Bioindicateur2 control mapping
+01_validate_analysis_data.R checks:
 
-No automatic control inference is used in the final workflow.
+presence and structure of all analysis-ready files;
+unique observation keys;
+expected dataset totals;
+agricultural reference sample sizes;
+Bioindicateur2 sample size;
+number of treatment-control contrasts;
+indicator validity.
 
-The first run writes:
+Expected totals are 756 reference observations, 26 Bioindicateur2 observations
+and 28 raw treatment-control contrasts.
 
-`output/reviewer/diagnostic_Bioindicateur2_treatment_levels.csv`
+02 — Main analysis
 
-Use this to populate:
+02_main_analysis.R:
 
-`config/bioindicateur2_controls.csv`
+selects agricultural reference populations;
+calculates descriptive summaries;
+derives framework-specific empirical score boundaries;
+scores the same 26 Bioindicateur2 observations against all four frameworks;
+records rarefaction-support metadata.
+03 — Sensitivity analyses
 
-with exact experiment/control labels. Rerun `analysis/reviewer_robustness_analysis.R` afterwards to obtain the LRR outputs.
+03_sensitivity_analyses.R implements:
 
+1,000 repeated equal-size subsamples at n = 58 per framework;
+sensitivity to extreme observations and 1–99% winsorisation;
+pairwise Spearman rank concordance;
+exact score agreement;
+agreement within ±1 score class;
+agreement after grouping scores into broad classes 0–2, 3–4 and 5–6;
+site-weighted and equal-weight pooled references;
+translation of raw treatment-control log response ratios into signed
+framework-specific score differences.
 
-## Manuscript Figures 1–4
+For directional treatment-control comparisons, absolute LRR values below
+1e-8 are treated as numerical zero solely to avoid assigning direction to
+floating-point noise.
 
-Version 0.3 adds `analysis/03_regenerate_manuscript_figures.R`, which rebuilds the central manuscript figures into `output/manuscript/`. It creates submitted-style reproduction figures plus revised candidates where reviewer-driven methodological decisions differ from the original analysis. See `MANUSCRIPT_FIGURE_REPRODUCTION.md`.
+04 — Main manuscript figures
 
-The submitted Figure 4 is explicitly treated as a **four-site** Bioindicateur2 analysis (QualiAgro, Thil, Yvetot and MetalEurope); the three-site wording in the submitted Methods was an omission.
+The script generates:
 
-## Supplementary Material
+Figure 1 — spatial distribution of datasets;
+Figure 2 — agricultural reference distributions;
+Figure 3 — scores assigned to Bioindicateur2 observations;
+Figure 4 — signed treatment-control score contrasts.
 
-Version 0.4 adds `analysis/04_regenerate_supplementary_material.R`. It rebuilds the submitted Supplementary Materials SM1-SM11 from the current reproducible workflow and stores reviewer-driven candidate supplementary items separately under `output/supplementary/reviewer_candidates/`. See `SUPPLEMENTARY_MATERIAL_REPRODUCTION.md`.
+Both PDF and PNG versions are produced.
 
-The revised supplement does **not** retain the historical ad hoc TIGA abundance `< 75000` filter. Shannon and Pielou are retained only to reproduce the historical supplementary scope; the new reviewer robustness analyses remain focused on RSr and density.
+05 — Supplementary material
 
-## Main output folders
+The script generates the final supplementary material:
 
-### `output/audit/`
+Figures S1–S7;
+Tables S1–S11.
 
-- workbook inventory;
-- curated input dimensions;
-- reconstructed merge versus historical merged workbook;
-- upstream `temporary` -> curated-sheet audit where reconstruction is possible;
-- TAXREF diagnostic.
+Internal consistency checks verify several key published results before the
+script terminates.
 
-### `output/baseline/`
+Key reproducibility checks
 
-- agricultural sample sizes;
-- legacy indicator summaries;
-- full untrimmed thresholds;
-- historical TIGA-filter thresholds;
-- score changes induced by that historical filter;
-- rarefaction support diagnostic.
+A successful workflow reproduces, among others, the following results:
 
-### `output/reviewer/`
+equal-size sensitivity: 95% resampling intervals exclude zero for
+17/24 pairwise internal richness-threshold differences and 15/24
+density-threshold differences;
+pooled raw versus equal-weight references give exact Bioindicateur2 score
+agreement of 96.15% for richness and 88.46% for density;
+all pooled-reference scores remain within one class;
+26 directional raw contrasts evaluated with four reference frameworks yield
+104 framework-by-contrast translations;
+among these, 75 (72.1%) yield a non-zero score difference in the same
+direction as the raw response, 29 (27.9%) are compressed to
+Delta score = 0, and none reverse direction.
+Statistical analyses
 
-- balanced `n = 58` threshold stability;
-- outlier sensitivity;
-- cross-framework concordance;
-- pooled raw versus balanced results;
-- LRR / Delta-score outputs once controls are mapped;
-- figures, run metadata and `sessionInfo()`.
+Distributional differences among empirical reference frameworks are evaluated
+using pairwise two-sample Cramér–von Mises tests with 10,000 ordinary
+resampling replicates and Bonferroni adjustment.
 
-### `output/manuscript/`
+Differences among scores assigned to the same Bioindicateur2 observations are
+evaluated using Friedman tests followed by Nemenyi pairwise comparisons.
 
-- reconstructed Figures 1–4 in PDF and PNG;
-- submitted-legacy and revised-candidate versions for Figures 3–4;
-- plotting data, score counts and four-site ranking summaries;
-- figure-reproduction manifest and `sessionInfo()`.
+Cross-framework Spearman correlations and classification-agreement statistics
+are interpreted descriptively.
 
-### `output/supplementary/`
+Treatment-control comparisons are also descriptive because the available
+analysis-ready Bioindicateur2 dataset contains one aggregated value per
+treatment or control condition rather than replicated treatment-level
+observations.
 
-- regenerated historical SM1-SM11 figures/tables;
-- all-site and agricultural-site four-indicator distributions;
-- descriptive statistics and Cramer-von Mises tests;
-- seven-class scoring illustration and framework-specific scoring schemes;
-- Bioindicateur2 four-indicator score plots plus Friedman/Nemenyi results;
-- `reviewer_candidates/` containing equal-n, winsorisation, concordance, pooling and LRR/Delta-score candidates;
-- regeneration manifest and `sessionInfo()`.
+Software dependencies
 
-## R packages
+The analysis uses R and the following packages:
 
-The scripts check for required packages and stop with a clear message if one is absent. Core requirements are:
+dplyr
+tidyr
+tibble
+cramer
+PMCMRplus
+e1071
+ggplot2
+cowplot
+maps
+scales
 
-```r
-c(
-  "readxl", "dplyr", "tidyr", "purrr", "stringr", "tibble",
-  "vegan", "ggplot2", "cowplot", "maps", "scales",
-  "e1071", "cramer", "PMCMRplus"
-)
-```
+Exact package and R versions used in a run are recorded through sessionInfo()
+in the reproducibility and output directories.
 
-No `setwd()` is used in the revised workflow, no object is written into `.GlobalEnv`, and no source workbook is modified in place.
+Data provenance and redistribution
 
-## GitHub -> Zenodo
+The original source workbooks and taxon-by-site abundance matrices are not
+redistributed in this repository because dataset-specific redistribution
+rights for those files have not been established.
 
-Before public release:
+The repository instead provides the frozen analysis-ready site-level indicator
+values underlying the statistical analyses presented in the manuscript.
 
-1. run from a clean checkout;
-2. resolve any provenance-audit differences;
-3. validate `config/bioindicateur2_controls.csv`;
-4. decide and document the retained TIGA outlier treatment;
-5. check redistribution rights for `data/raw/` and `data/audit/`;
-6. commit the final code and selected reproducible outputs;
-7. update and rename `CITATION.cff.template` to `CITATION.cff`;
-8. create a versioned GitHub release;
-9. archive that release in Zenodo and record the DOI.
+Accordingly, the public workflow reproduces the analyses from the
+analysis-ready indicator values onward. It does not independently reconstruct
+site-level indicator values from the original taxonomic source files.
+
+The original calculation of rarefied richness used rarefaction implemented in
+R with the vegan package; those calculations precede the public workflow.
+
+Outputs
+
+Generated files are written to:
+
+output/analysis/
+output/sensitivity/
+output/manuscript/
+output/supplementary/
+
+The output directories are regenerated by the workflow and should therefore be
+treated as derived products rather than source data.
+
+Citation
+
+If you use this repository, please cite the associated manuscript:
+
+Suarez H., Cortet J., Auclerc A., Bougon N., Brand M., Henon N., Jolivet C.,
+Lévêque A., Pouzenc S., Versavel C. & Hedde M.
+Empirical reference frameworks shape Collembola indicator distributions,
+scores and contrast sensitivity.
+Ecological Indicators.
+
+A version-specific archival citation will be added after deposition of the
+public release in Zenodo.
+
+License
+
+Code in this repository is distributed under the terms of the MIT License.
+
+Reuse of the analysis-ready data remains subject to the provenance and rights
+associated with the original contributing datasets.

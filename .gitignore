@@ -10,19 +10,26 @@ Thumbs.db
 ~$*
 
 # Supplied data: keep local until redistribution rights are checked
-data/raw/*
-!data/raw/.gitkeep
 data/audit/*
 !data/audit/.gitkeep
 
 # Reproducible intermediates
-data/derived/*
-!data/derived/.gitkeep
 
 # Generated outputs (selectively force-add final tables/figures for a release)
-output/audit/*
-!output/audit/.gitkeep
-output/baseline/*
-!output/baseline/.gitkeep
-output/reviewer/*
-!output/reviewer/.gitkeep
+output/analysis/*
+!output/analysis/.gitkeep
+output/sensitivity/*
+!output/sensitivity/.gitkeep
+
+# Generated analysis outputs
+output/analysis/*
+!output/analysis/.gitkeep
+
+output/sensitivity/*
+!output/sensitivity/.gitkeep
+
+output/manuscript/*
+!output/manuscript/.gitkeep
+
+output/supplementary/*
+!output/supplementary/.gitkeep
