@@ -1,0 +1,31 @@
+Generated: 2026-08-19 09:58:39 UTC
+Supplementary Material regeneration: COMPLETE
+
+Historical supplementary items regenerated from the current reproducible pipeline:
+ SM1  Site counts by land-cover category
+ SM2  Indicator distributions, all sites (RSr, Shannon, Pielou, density)
+ SM3  Descriptive statistics, all sites
+ SM4  Pairwise Cramer-von Mises tests, all sites, Bonferroni-adjusted
+ SM5  Indicator distributions, agricultural sites
+ SM6  Descriptive statistics, agricultural sites
+ SM7  Pairwise Cramer-von Mises tests, agricultural sites, Bonferroni-adjusted
+ SM8  Seven-class scoring-method illustration
+ SM9  Framework-specific scoring schemes, agricultural sites
+ SM10 Bioindicateur2 score distributions for four indicators
+ SM11 Friedman and Nemenyi tests on Bioindicateur2 scores
+
+Revision decisions:
+ - current reproducible inputs/indicators/scores are authoritative;
+ - the historical ad hoc TIGA abundance <75000 filter is not used here;
+ - Shannon and Pielou are retained as historical secondary/supplementary indicators;
+ - kurtosis is corrected because e1071::kurtosis() already returns excess kurtosis; the historical double-subtracted value is retained as an audit column;
+ - Cramer-test p-values use 10,000 bootstrap replicates with fixed seed 1234 to reduce Monte-Carlo instability;
+ - the SM9 density display extends to 110,000 ind. m^-2 so the complete TIGA score range is visible;
+ - reviewer robustness analyses remain focused on manuscript indicators RSr and density.
+
+Reviewer-driven candidate supplementary items are stored under:
+ output/supplementary/reviewer_candidates/
+Their final numbering/placement should be decided during manuscript revision.
+
+Original submitted supplementary rasters are retained under:
+ legacy/submitted_supplementary_figures/

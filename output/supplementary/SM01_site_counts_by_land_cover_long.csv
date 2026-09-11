@@ -1,0 +1,17 @@
+"land_cover","framework","n"
+"Agricultural","ANDRA",90
+"Agricultural","RMQS_BioDiv_Bretagne",89
+"Agricultural","RMQS_Biodiversite",58
+"Agricultural","TIGA_rural",345
+"Artificialized","ANDRA",0
+"Artificialized","RMQS_BioDiv_Bretagne",0
+"Artificialized","RMQS_Biodiversite",1
+"Artificialized","TIGA_rural",13
+"Forests and semi-natural environments","ANDRA",42
+"Forests and semi-natural environments","RMQS_BioDiv_Bretagne",9
+"Forests and semi-natural environments","RMQS_Biodiversite",33
+"Forests and semi-natural environments","TIGA_rural",72
+"Wetlands","ANDRA",0
+"Wetlands","RMQS_BioDiv_Bretagne",0
+"Wetlands","RMQS_Biodiversite",1
+"Wetlands","TIGA_rural",0

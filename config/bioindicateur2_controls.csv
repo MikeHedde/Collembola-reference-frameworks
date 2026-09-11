@@ -1,0 +1,5 @@
+Nom_site,control_Site,control_Traitement,control_Contamination,include,notes
+QualiAgro,B09TEM,TEM,non,TRUE,"Explicit local control used in the manuscript case study."
+Thil,B10THLT,labour 30cm,non,TRUE,"Conventional/deep ploughing local reference."
+Yvetot,B10YVGC,blé,non,TRUE,"Explicitly confirmed local arable control; B10YVSIII also has Traitement=blé and must not be used as the control."
+MetalEurope,B09MTEC,T,non,TRUE,"Local uncontaminated reference plot used for the submitted four-site contrast analysis."

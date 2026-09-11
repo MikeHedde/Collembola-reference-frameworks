@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this analysis workflow, please cite the archived software release and the associated manuscript."
+title: "Collembola reference-framework robustness analyses"
+type: software
+authors:
+  - family-names: "Hedde"
+    given-names: "Mickael"
+  - family-names: "Suarez"
+    given-names: "Helio"
+version: "1.0.0-review"
+date-released: "YYYY-MM-DD"
+repository-code: "https://github.com/OWNER/REPOSITORY"
+# doi: "10.5281/zenodo.XXXXXXX"
