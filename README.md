@@ -8,6 +8,7 @@ Suarez H., Cortet J., Auclerc A., Bougon N., Brand M., Henon N., Jolivet C.,
 Lévêque A., Pouzenc S., Versavel C. & Hedde M.
 
 Target journal: *Ecological Indicators*.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22710975.svg)](https://doi.org/10.5281/zenodo.22710975)
 
 ## Overview
 
@@ -330,8 +331,9 @@ Empirical reference frameworks shape Collembola indicator distributions,
 scores and contrast sensitivity.
 Ecological Indicators.
 
-A version-specific archival citation will be added after deposition of the
-public release in Zenodo.
+The archived v1.0.0 release is available on Zenodo:
+
+**DOI:** [10.5281/zenodo.22710975](https://doi.org/10.5281/zenodo.22710975)
 
 ## License
 
