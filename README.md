@@ -1,6 +1,6 @@
-# Collembola reference-framework revision workflow
+# Collembola reference-framework 
 
-Reproducible R workflow rebuilt from the scripts and data supplied by H. Suarez for the *Ecological Indicators* revision on empirical Collembola reference frameworks.
+Reproducible R workflow rebuilt from the scripts and data supplied by H. Suarez for the *Ecological Indicators* on empirical Collembola reference frameworks.
 
 The repository now separates six stages that had previously been mixed together:
 
